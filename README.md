@@ -48,10 +48,10 @@ He logrado avanzar en los siguientes requerimientos técnicos:
   REACT_APP_BACKEND_URL=http://localhost:8080/api
 ```
 
-- Ir a la carpeta del Frontend
+- Instalar pnpm en caso de no tenerlo
 
 ```bash
-  cd tupaca_challenge_front
+  npm install -g pnpm
 ```
 
 - Instalar las dependencias
