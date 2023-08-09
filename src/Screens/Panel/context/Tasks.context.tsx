@@ -61,10 +61,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
           },
         });
         setTasks(data);
-        console.log("data:", data);
       }
     } catch (error) {
-      console.log("error:", error);
       showToaster("Error", "No se pudieron obtener las tareas", "error");
     }
   };
