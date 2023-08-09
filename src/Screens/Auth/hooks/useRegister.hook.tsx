@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useAxios, useLocalStorage, useToaster } from "../../../hooks";
+import { useContext, useState } from "react";
+import { useLocalStorage, useToaster } from "../../../hooks";
 import { ROUTES } from "../../../routes";
 import { useNavigate } from "react-router";
-import { isAxiosError } from "axios";
+import AuthContext from "../Context/Auth.context";
 
 export const useRegister = () => {
   const navigator = useNavigate();
-  const { api } = useAxios();
+  const { register } = useContext(AuthContext);
   const { showToaster } = useToaster();
   const { setLocalStorage } = useLocalStorage();
   const [isLoading, setIsLoading] = useState(false);
@@ -70,25 +70,15 @@ export const useRegister = () => {
     const errors = validateInputs();
     if (errors) return;
 
-    try {
-      setIsLoading(true);
-      const { data } = await api.post("/users/register", inputValues);
+    setIsLoading(true);
+    const data = await register(inputValues);
 
-      setLocalStorage("token", data.token);
+    if (data) {
+      setLocalStorage("token", data!.token);
       setIsLoading(false);
       showToaster("Éxito", "Usuario registrado correctamente", "success");
-      navigator(ROUTES.USER.PANEL);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === 409) {
-          showToaster("Error", "Usuario ya registrado", "error");
-        }
-        setIsLoading(false);
-        return;
-      }
 
-      showToaster("Error", "No se pudo registrar el usuario", "error");
-      setIsLoading(false);
+      navigator(ROUTES.USER.PANEL);
     }
   };
   return {

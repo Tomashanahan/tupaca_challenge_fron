@@ -3,7 +3,6 @@ import { useLayoutEffect } from "react";
 
 export function useAxios() {
   const token = localStorage.getItem("token");
-  console.log("token:", token);
 
   useLayoutEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

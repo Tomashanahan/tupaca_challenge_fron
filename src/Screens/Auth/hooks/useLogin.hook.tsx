@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useAxios, useLocalStorage, useToaster } from "../../../hooks";
+import { useContext, useState } from "react";
+import { useLocalStorage } from "../../../hooks";
 import { useNavigate } from "react-router";
 import { ROUTES } from "../../../routes";
+import AuthContext from "../Context/Auth.context";
 
 interface InputErrors {
   email: string;
@@ -15,8 +16,7 @@ interface InputValues {
 
 export const useLogin = () => {
   const navigator = useNavigate();
-  const { showToaster } = useToaster();
-  const { api } = useAxios();
+  const { login } = useContext(AuthContext);
   const { setLocalStorage } = useLocalStorage();
   const [isLoading, setIsLoading] = useState(false);
   const [inputErrors, setInputErrors] = useState<InputErrors>({
@@ -68,22 +68,14 @@ export const useLogin = () => {
     if (errors) return;
 
     setIsLoading(true);
-    try {
-      const { data } = await api.post("/users/login", inputValues);
+    const data = await login(inputValues.email, inputValues.password);
 
-      setLocalStorage("token", data.token);
-      navigator(ROUTES.USER.PANEL);
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message;
-
-      if (errorMessage) {
-        return showToaster("Error", errorMessage, "error");
-      }
-
-      showToaster("Error", "Error al hacer login", "error");
-    } finally {
+    if (data) {
+      setLocalStorage("token", data!.token);
       setIsLoading(false);
+      navigator(ROUTES.USER.PANEL);
     }
+    setIsLoading(false);
   };
 
   return {

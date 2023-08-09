@@ -21,7 +21,6 @@ export const useSearchTask = () => {
 
   const onSelectChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    console.log("value:", value === "");
 
     if (name === "orderByCreationTitle") {
       setOrderByTitle((prev) =>
