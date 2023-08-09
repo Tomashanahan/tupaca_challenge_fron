@@ -16,6 +16,7 @@ export interface TaskContextProps {
   createTask: (inputValues: InputValues) => Promise<void>;
   tasks: Task[];
   handleOnDragEnd: (result: DropResult) => void;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 const TaskContext = createContext<TaskContextProps>({} as TaskContextProps);
@@ -40,6 +41,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     orderByDate?: string,
     orderByTitle?: string
   ) => {
+    const token = localStorage.getItem("token");
     try {
       const params = {
         title: searchByName,
@@ -51,13 +53,18 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       if (orderByDate === "") delete params.orderByDate;
       if (searchByName === "") delete params.title;
 
-      const { data } = await api.get("/task", {
-        params,
-      });
-
-      setTasks(data);
-      console.log('data:', data)
+      if (token) {
+        const { data } = await api.get("/task", {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setTasks(data);
+        console.log("data:", data);
+      }
     } catch (error) {
+      console.log("error:", error);
       showToaster("Error", "No se pudieron obtener las tareas", "error");
     }
   };
@@ -137,6 +144,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         tasks,
         updateTask,
         handleOnDragEnd,
+        setTasks,
       }}
     >
       {children}
