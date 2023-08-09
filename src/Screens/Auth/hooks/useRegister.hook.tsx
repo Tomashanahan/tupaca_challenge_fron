@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAxios, useLocalStorage, useToaster } from "../../../hooks";
 import { ROUTES } from "../../../routes";
 import { useNavigate } from "react-router";
+import { isAxiosError } from "axios";
 
 export const useRegister = () => {
   const navigator = useNavigate();
@@ -78,6 +79,14 @@ export const useRegister = () => {
       showToaster("Éxito", "Usuario registrado correctamente", "success");
       navigator(ROUTES.USER.PANEL);
     } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 409) {
+          showToaster("Error", "Usuario ya registrado", "error");
+        }
+        setIsLoading(false);
+        return;
+      }
+
       showToaster("Error", "No se pudo registrar el usuario", "error");
       setIsLoading(false);
     }
