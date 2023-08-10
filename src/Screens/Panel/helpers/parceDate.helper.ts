@@ -1,11 +1,11 @@
-export const parseDate = (date: string) => {
-  var fechaOriginal = new Date(date);
+export const parceDate = (date: string) => {
+  const fechaOriginal = new Date(date);
 
-  var day = fechaOriginal.getDate();
-  var month = fechaOriginal.toLocaleString("default", { month: "short" });
-  var year = fechaOriginal.getFullYear();
+  const day = fechaOriginal.getDate();
+  const month = fechaOriginal.toLocaleString("default", { month: "short" });
+  const year = fechaOriginal.getFullYear();
 
-  var nuevaFecha = day + " " + month + " " + year;
+  const nuevaFecha = day + " " + month + " " + year;
 
   return nuevaFecha;
 };

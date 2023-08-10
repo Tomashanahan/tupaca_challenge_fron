@@ -12,11 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { TaskBadgeStatus } from ".";
 import DotsIcon from "../../../assets/svgs/dots.svg";
+import ClockIcon from "../../../assets/svgs/clock.svg";
 import { ReactSVG } from "react-svg";
 import { Task } from "..";
 import { useContext } from "react";
 import TaskContext from "../context/Tasks.context";
-import { parseDate } from "../helpers";
+import { parceDate } from "../helpers";
 import { Draggable } from "@hello-pangea/dnd";
 
 interface TaskCardProps {
@@ -102,30 +103,11 @@ export const TaskCard = ({
           >
             <Flex alignItems={"center"} justify={"space-between"} gap={"10px"}>
               <Text color={"#A0AEC0"} as="span" textTransform={"capitalize"}>
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19.25 10C19.25 4.89137 15.1086 0.75 10 0.75C4.89137 0.75 0.75 4.89137 0.75 10C0.75 15.1086 4.89137 19.25 10 19.25C15.1086 19.25 19.25 15.1086 19.25 10Z"
-                    stroke="#A0AEC0"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M10 5.5V10L13 13"
-                    stroke="#A0AEC0"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <ReactSVG src={ClockIcon} />
               </Text>
               <Text color={"#A0AEC0"}>
                 <time dateTime="2021-11-24T20:00:00">
-                  {parseDate(task.updatedAt)}
+                  {parceDate(task.updatedAt)}
                 </time>
               </Text>
             </Flex>
